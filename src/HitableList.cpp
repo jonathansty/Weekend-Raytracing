@@ -15,7 +15,7 @@ bool HitableList::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) co
 		if (m_List[i]->Hit(r, t_min, ClosestSoFar, tmp))
 		{
 			bHitAnything = true;
-			ClosestSoFar = rec.t;
+			ClosestSoFar = tmp.t;
 			rec = tmp;
 		}
 	}

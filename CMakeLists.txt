@@ -25,7 +25,9 @@ set ( SOURCES
 	"src/Sphere.cpp"
 	"src/HitableList.cpp"
 	"src/Camera.cpp"
+	"src/Material.cpp"
 	
+	"include/Material.h"
 	"include/Ray.h"
 	"include/Vec3.h"
 	"include/stdafx.h"
