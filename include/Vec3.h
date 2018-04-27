@@ -1,5 +1,6 @@
 #pragma once
-
+#define _USE_MATH_DEFINES
+#include <math.h>
 class Vec3
 {
 public:
@@ -106,7 +107,7 @@ inline Vec3 cross(const Vec3& v1, const Vec3& v2)
 {
 	return Vec3(
 		v1.e[1]*v2.e[2] - v1.e[2]*v2.e[1],
-		v1.e[0]*v2.e[2] + v1.e[2]*v2.e[0],
+		-( v1.e[0]*v2.e[2] - v1.e[2]*v2.e[0] ),
 		v1.e[0]*v2.e[1] - v1.e[1]*v2.e[0]
 	);
 }

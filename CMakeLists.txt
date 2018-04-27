@@ -3,7 +3,7 @@ project("Raytracing_In_A_Weekend")
 
 # Setup config
 set (Raytracing_In_A_Weekend_VERSION_MAJOR 1)
-set (Raytracing_In_A_Weekend_VERSION_MINOR 0)
+set (Raytracing_In_A_Weekend_VERSION_MINOR 1)
 set (CMAKE_CXX_STANDARD 17)
 
 include_directories(
