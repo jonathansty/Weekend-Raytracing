@@ -20,6 +20,17 @@ Vec3 Random::RandomUnitSphere()
 	return p;
 }
 
+Vec3 Random::RandomUnitDisk()
+{
+	auto d = std::uniform_real_distribution<float>(-1.0f, 1.0f);
+	Vec3 p;
+	do
+	{
+		p = Vec3(d(g_mt), d(g_mt), 0.0f);
+	} while (dot(p,p) >= 1.0);
+	return p;
+}
+
 float Random::Range(float a, float b)
 {
 	auto d = std::uniform_real_distribution<float>(a, b);

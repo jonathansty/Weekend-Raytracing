@@ -56,6 +56,7 @@ namespace Random
 	static std::mt19937_64 g_mt = std::mt19937_64(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
 	Vec3 RandomUnitSphere();
+	Vec3 RandomUnitDisk();
 
 	float Range(float a, float b);
 }
