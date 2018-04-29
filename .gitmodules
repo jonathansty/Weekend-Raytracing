@@ -1,0 +1,3 @@
+[submodule "lib/hlslpp"]
+	path = lib/hlslpp
+	url = https://github.com/redorav/hlslpp.git

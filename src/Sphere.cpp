@@ -6,7 +6,7 @@
 
 bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
-	Vec3 oc = r.Origin() - m_Center;
+	float3 oc = r.Origin() - m_Center;
 	float a = dot(r.Direction(), r.Direction());
 	float b = dot(oc, r.Direction());
 	float c = dot(oc, oc) - m_Radius * m_Radius;

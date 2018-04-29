@@ -4,8 +4,8 @@ class Material;
 struct HitRecord 
 {
 	float t;
-	Vec3 p;
-	Vec3 normal;
+	float3 p;
+	float3 normal;
 	Material* material;
 };
 

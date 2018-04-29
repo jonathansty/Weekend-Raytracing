@@ -5,14 +5,14 @@ class Sphere : public IHitable
 public:
 
 	Sphere() {}
-	Sphere(Vec3 Center, float radius, class Material* material)
+	Sphere(float3 Center, float radius, class Material* material)
 	: m_Center(Center)
 	, m_Radius(radius)
 	, m_Material(material)
 	{
 	}
 
-	Vec3 m_Center;
+	float3 m_Center;
 	float m_Radius;
 	class Material* m_Material;
 

@@ -8,7 +8,7 @@ bool HitableList::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) co
 {
 	HitRecord tmp{};
 	bool bHitAnything = false;;
-	double ClosestSoFar = t_max;
+	float ClosestSoFar = t_max;
 
 	for (uint32_t i = 0; i < m_ListSize; ++i)
 	{
