@@ -1,45 +1,19 @@
 #include "stdafx.h"
 #include "Material.h"
+#include "texture.h"
+
+Lambertian::~Lambertian()
+{
+	delete m_Texture;
+	m_Texture = nullptr;
+}
 
 bool Lambertian::Scatter(const Ray& rin, const HitRecord& rec, float3& attenuation, Ray& scattered) const
 {
 	float3 target = rec.p + rec.normal + Random::RandomUnitSphere();
 	scattered = Ray(rec.p, target - rec.p, rin.Time());
-	attenuation = m_Albedo;
+	attenuation = m_Texture->Value(hlslpp::float2{}, rec.p);
 	return true;
-}
-
-float3 Random::RandomUnitSphere()
-{
-	auto d = std::uniform_real_distribution<float>(-1.0f, 1.0f);
-	float3 p;
-	do
-	{
-		p = float3(d(g_mt), d(g_mt), d(g_mt));
-	} while (hlslpp::dot(p,p) >= 1.0f);
-	return p;
-}
-
-float3 Random::RandomUnitDisk()
-{
-	auto d = std::uniform_real_distribution<float>(-1.0f, 1.0f);
-	float3 p;
-	do
-	{
-		p = float3(d(g_mt), d(g_mt), 0.0f);
-	} while (hlslpp::dot(p,p) >= 1.0f);
-	return p;
-}
-
-float Random::Range(float a, float b)
-{
-	auto d = std::uniform_real_distribution<float>(a, b);
-	return d(g_mt);
-}
-
-float Random::Value()
-{
-	return Range(0.f, 1.f);
 }
 
 float3 Reflect(const float3& v, const float3& n)

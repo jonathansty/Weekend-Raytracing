@@ -28,7 +28,10 @@ set ( SOURCES
 	"src/Camera.cpp"
 	"src/Material.cpp"
 	"src/aabb.cpp"
+	"src/Random.cpp"
+	"src/texture.cpp"
 	
+	"include/Random.h"
 	"include/aabb.h"
 	"include/Material.h"
 	"include/Ray.h"
@@ -38,7 +41,8 @@ set ( SOURCES
 	"include/Sphere.h"
 	"include/HitableList.h"
 	"include/Camera.h"
-
+	"include/main.h"
+	"include/texture.h"
 )
 
 add_executable(raytracer ${SOURCES})

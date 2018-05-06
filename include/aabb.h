@@ -1,4 +1,5 @@
 #pragma once
+#include "Hitable.h"
 
 namespace Math
 {
@@ -24,6 +25,23 @@ namespace Math
 	private:
 		float3 m_Min;
 		float3 m_Max;
+	};
+
+	AABB SurroundingBox(const AABB& box0, const AABB& box1);
+
+	class BVHNode : public IHitable
+	{
+	public:
+		BVHNode() {}
+		BVHNode(std::vector<IHitable*> l, float t0, float t1);
+
+		IHitable* m_Left;
+		IHitable* m_Right;
+		AABB m_Box;
+
+		virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
+		virtual bool BoundingBox(float t0, float t1, Math::AABB& box) const override;
+
 	};
 
 }

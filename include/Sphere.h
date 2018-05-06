@@ -12,11 +12,14 @@ public:
 	{
 	}
 
+	~Sphere();
+
 	float3 m_Center;
 	float m_Radius;
 	class Material* m_Material;
 
 	virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
+	virtual bool BoundingBox(float t0, float t1, Math::AABB& box) const override;
 
 };
 
@@ -32,6 +35,7 @@ public:
 	{
 
 	}
+	~MovingSphere(){}
 
 	float3 Center(float time) const { 
 		float dt = (time - m_Time0) / (m_Time1 - m_Time0);
@@ -40,6 +44,7 @@ public:
 
 	virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& rex) const override;
 
+	virtual bool BoundingBox(float t0, float t1, Math::AABB& box) const override;
 private:
 	float3 m_Center0;
 	float3 m_Center1;

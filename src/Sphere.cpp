@@ -3,6 +3,13 @@
 #include "Ray.h"
 #include "Hitable.h"
 #include "Sphere.h"
+#include "aabb.h"
+
+Sphere::~Sphere()
+{
+	delete m_Material;
+	m_Material = nullptr;
+}
 
 bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
@@ -40,6 +47,15 @@ bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 	return false;
 }
 
+bool Sphere::BoundingBox(float t0, float t1, Math::AABB& box) const
+{
+	box = Math::AABB(
+			m_Center - float3(m_Radius, m_Radius, m_Radius), 
+			m_Center + float3(m_Radius, m_Radius, m_Radius)
+		);
+	return true;
+}
+
 bool MovingSphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
 	float3 oc = r.Origin() - Center(r.Time());
@@ -74,4 +90,12 @@ bool MovingSphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
 		}
 	}
 	return false;
+}
+
+bool MovingSphere::BoundingBox(float t0, float t1, Math::AABB& box) const
+{
+	box = SurroundingBox(
+		Math::AABB(Center(t0) - float3(m_Radius, m_Radius, m_Radius),Center(t0) + float3(m_Radius, m_Radius, m_Radius)),
+		Math::AABB(Center(t1) - float3(m_Radius, m_Radius, m_Radius), Center(t1) + float3(m_Radius, m_Radius, m_Radius)));
+	return true;
 }
