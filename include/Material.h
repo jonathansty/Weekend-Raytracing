@@ -59,4 +59,7 @@ namespace Random
 	float3 RandomUnitDisk();
 
 	float Range(float a, float b);
+
+	float Value();
 }
+

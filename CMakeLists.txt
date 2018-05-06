@@ -27,7 +27,9 @@ set ( SOURCES
 	"src/HitableList.cpp"
 	"src/Camera.cpp"
 	"src/Material.cpp"
+	"src/aabb.cpp"
 	
+	"include/aabb.h"
 	"include/Material.h"
 	"include/Ray.h"
 	"include/Vec3.h"

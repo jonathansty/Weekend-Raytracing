@@ -4,7 +4,7 @@
 bool Lambertian::Scatter(const Ray& rin, const HitRecord& rec, float3& attenuation, Ray& scattered) const
 {
 	float3 target = rec.p + rec.normal + Random::RandomUnitSphere();
-	scattered = Ray(rec.p, target - rec.p);
+	scattered = Ray(rec.p, target - rec.p, rin.Time());
 	attenuation = m_Albedo;
 	return true;
 }
@@ -35,6 +35,11 @@ float Random::Range(float a, float b)
 {
 	auto d = std::uniform_real_distribution<float>(a, b);
 	return d(g_mt);
+}
+
+float Random::Value()
+{
+	return Range(0.f, 1.f);
 }
 
 float3 Reflect(const float3& v, const float3& n)
@@ -68,7 +73,7 @@ float Schlick(float cosine, float RefIdx)
 bool Metal::Scatter(const Ray& rin, const HitRecord& rec, float3& attenuation, Ray& scattered) const
 {
 	float3 reflected = Reflect(hlslpp::normalize(rin.Direction()), rec.normal);
-	scattered = Ray(rec.p, reflected + m_Fuzz * Random::RandomUnitSphere());
+	scattered = Ray(rec.p, reflected + m_Fuzz * Random::RandomUnitSphere(),rin.Time());
 	attenuation = m_Alberto;
 	// Just making sure we've got a proper ray
 	return (dot(scattered.Direction(), rec.normal) > 0.0f);
@@ -108,11 +113,11 @@ bool Dielectric::Scatter(const Ray& rin, const HitRecord& rec, float3& attenuati
 
 	if (Random::Range(0.0f, 1.0f) < ReflectProb)
 	{
-		scattered = Ray(rec.p, Reflected);
+		scattered = Ray(rec.p, Reflected, rin.Time());
 	}
 	else
 	{
-		scattered = Ray(rec.p, Refracted);
+		scattered = Ray(rec.p, Refracted,rin.Time());
 	}
 
 	return true;
