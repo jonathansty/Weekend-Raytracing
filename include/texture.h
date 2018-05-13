@@ -1,4 +1,5 @@
 #pragma once
+#include "Noise.h"
 
 class Texture
 {
@@ -41,5 +42,15 @@ private:
 	Texture* m_oddAlbedo;
 };
 
+class NoiseTexture : public Texture
+{
+public:
+	NoiseTexture(const float3& scale) : m_Scale(scale) {};
+	virtual hlslpp::float3 Value(const hlslpp::float2& uv, const hlslpp::float3& pos) const override;
+
+private:
+	float3 m_Scale;
+	Math::PerlinNoise m_noise;
+};
 
 

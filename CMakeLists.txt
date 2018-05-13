@@ -30,6 +30,7 @@ set ( SOURCES
 	"src/aabb.cpp"
 	"src/Random.cpp"
 	"src/texture.cpp"
+	"src/Noise.cpp"
 	
 	"include/Random.h"
 	"include/aabb.h"
@@ -43,6 +44,7 @@ set ( SOURCES
 	"include/Camera.h"
 	"include/main.h"
 	"include/texture.h"
+	"include/Noise.h"
 )
 
 add_executable(raytracer ${SOURCES})

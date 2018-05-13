@@ -17,3 +17,9 @@ hlslpp::float3 CheckerTexture::Value(const hlslpp::float2& uv, const hlslpp::flo
 	else
 		return m_oddAlbedo->Value(uv, p);
 }
+
+float3 NoiseTexture::Value(const hlslpp::float2& uv, const float3& pos) const
+{
+	return float3(1, 1, 1)*m_noise.noise(pos*m_Scale);
+
+}

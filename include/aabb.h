@@ -3,6 +3,8 @@
 
 namespace Math
 {
+
+
 	inline float ffmin(float a, float b) { return (a > b) ? b : a; }
 	inline float ffmax(float a, float b) { return (a > b) ? a : b; }
 

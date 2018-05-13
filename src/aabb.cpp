@@ -4,6 +4,7 @@
 #include "Random.h"
 using namespace Math;
 
+
 bool AABB::Hit(const Ray& r, float tmin, float tmax) const
 {
 	// TODO: Use optimized code
@@ -111,13 +112,17 @@ BVHNode::BVHNode(std::vector<IHitable*> l, float t0, float t1)
 		m_Left = l[0];
 		m_Right = l[1];
 	}
-	else {
-		m_Left = new BVHNode(std::vector<IHitable*>(l.begin(), l.begin() + l.size() / 2), t0, t1);
-		m_Right = new BVHNode(std::vector<IHitable*>(l.begin() + l.size() / 2, l.end()), t0, t1);
+	else 
+	{
+		std::vector<IHitable*> left{ l.begin(), l.begin() + l.size() / 2 };
+		std::vector<IHitable*> right{ l.begin() + l.size() / 2, l.end() };
+		m_Left = new BVHNode(left, t0, t1);
+		m_Right = new BVHNode(right, t0, t1);
 	}
 
 	AABB boxLeft, boxRight;
-	if (!m_Left->BoundingBox(t0, t1, boxLeft) || !m_Right->BoundingBox(t0, t1, boxRight))
+	if ( !m_Left->BoundingBox(t0, t1, boxLeft) 
+	  || !m_Right->BoundingBox(t0, t1, boxRight))
 	{
 		std::cerr << "No bounding box in BVHNode constructor \n";
 	}
@@ -162,3 +167,4 @@ bool BVHNode::BoundingBox(float t0, float t1, Math::AABB& box) const
 	box = m_Box;
 	return true;
 }
+
