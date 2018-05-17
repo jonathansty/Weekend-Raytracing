@@ -20,6 +20,6 @@ hlslpp::float3 CheckerTexture::Value(const hlslpp::float2& uv, const hlslpp::flo
 
 float3 NoiseTexture::Value(const hlslpp::float2& uv, const float3& pos) const
 {
-	return float3(1, 1, 1)*m_noise.noise(pos*m_Scale);
+	return float3(1, 1, 1)*0.5*(1+ sin(m_Scale * pos.z + 10* m_noise.turb(pos)));
 
 }
