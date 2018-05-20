@@ -1,16 +1,17 @@
 #pragma once
-
+#include "Ray.h"
 namespace Math
 {
 	class AABB;
 }
-class Material;
+
 struct HitRecord 
 {
 	float t;
-	float3 p;
-	float3 normal;
-	Material* material;
+	hlslpp::float3 p;
+	hlslpp::float3 normal;
+	hlslpp::float2 uv;
+	class Material* material;
 };
 
 class IHitable

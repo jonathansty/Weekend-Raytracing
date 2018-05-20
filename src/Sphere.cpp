@@ -4,6 +4,7 @@
 #include "Hitable.h"
 #include "Sphere.h"
 #include "aabb.h"
+#include "Material.h"
 
 Sphere::~Sphere()
 {

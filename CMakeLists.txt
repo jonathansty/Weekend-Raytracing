@@ -15,41 +15,60 @@ configure_file(
 	"${PROJECT_SOURCE_DIR}/Config.h.inl"
 	"${PROJECT_BINARY_DIR}/Config.h"
 )
-set (GCC_COVERAGE_COMPILE_FLAGS 
-"-m32 -msse4.1")
+if(!WIN32)
+	set (GCC_COVERAGE_COMPILE_FLAGS "-m32 -msse4.1")
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+endif()
 
 
-SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 include_directories("$(PROJECT_BINARY_DIR)")
 set ( SOURCES 
 	"src/main.cpp"
-	"src/Ray.cpp"
-	"src/Vec3.cpp"
-	"src/stdafx.cpp"
-	"src/Hitable.cpp"
-	"src/Sphere.cpp"
-	"src/HitableList.cpp"
-	"src/Camera.cpp"
-	"src/Material.cpp"
-	"src/aabb.cpp"
-	"src/Random.cpp"
-	"src/texture.cpp"
-	"src/Noise.cpp"
-	
-	"include/Random.h"
-	"include/aabb.h"
-	"include/Material.h"
-	"include/Ray.h"
-	"include/Vec3.h"
-	"include/stdafx.h"
-	"include/Hitable.h"
-	"include/Sphere.h"
-	"include/HitableList.h"
-	"include/Camera.h"
 	"include/main.h"
-	"include/texture.h"
+
+	# precompiled header ( normally )
+	"src/stdafx.cpp"
+	"include/stdafx.h"
+
+	# Maths
+	"src/Ray.cpp"
+	"include/Ray.h"
+	"src/Vec3.cpp"
+	"include/Vec3.h"
+	"src/aabb.cpp"
+	"include/aabb.h"
+	"src/Random.cpp"
+	"include/Random.h"
+	"src/Noise.cpp"
 	"include/Noise.h"
+
+	# hitables
+	"src/Hitable.cpp"
+	"include/Hitable.h"
+	"src/HitableList.cpp"
+	"include/HitableList.h"
+	"src/Sphere.cpp"
+	"include/Sphere.h"
+	"src/Rect.cpp"
+	"include/Rect.h"
+	
+	# camera
+	"src/Camera.cpp"
+	"include/Camera.h"
+
+	# materials
+	"src/Material.cpp"
+	"include/Material.h"
+
+	# textures
+	"src/texture.cpp"
+	"include/texture.h"
+
+	# lights
+	"src/DiffuseLight.cpp"
+	"include/DiffuseLight.h"
+
 )
 
 add_executable(raytracer ${SOURCES})

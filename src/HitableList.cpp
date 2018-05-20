@@ -36,7 +36,7 @@ bool HitableList::BoundingBox(float t0, float t1, Math::AABB& box) const
 	else
 		box = tmp;
 
-	for (int i = 1; i < m_ListSize; ++i)
+	for (uint32_t i = 1; i < m_ListSize; ++i)
 	{
 		if (m_List[i]->BoundingBox(t0, t1, tmp))
 		{

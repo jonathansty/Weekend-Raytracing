@@ -8,9 +8,11 @@
 #include "Hitable.h"
 #include "HitableList.h"
 #include "Sphere.h"
+#include "Rect.h"
 #include "Camera.h"
 
 #include "Material.h"
+#include "DiffuseLight.h"
 #include "texture.h"
 #include "aabb.h"
 #include "main.h"
@@ -123,6 +125,27 @@ HitableList* TwoNoiseSpheres(Camera& cam, uint32_t nx, uint32_t ny)
 	list[1] = new Sphere(float3(0, 2, 0), 2, new Lambertian(checker));
 	return new HitableList(list, 2);
 }
+HitableList* SimpleLight(Camera& cam, uint32_t nx, uint32_t ny) {
+	cam = Camera(
+		float3(19, 7, 3),
+		float3(0, 1, 0),
+		float3(0, 1, 0),
+		20.f, // fov
+		float(nx) / float(ny),
+		0.f,
+		10.f,
+		0.0f,
+		1.0f);
+
+	Texture* perTex = new NoiseTexture(4);
+	IHitable** list = new IHitable*[4];
+	list[0] = new Sphere(float3(0, -1000, 0), 1000, new Lambertian(new CheckerTexture(new ConstantTexture({ 1,1,1 }), new ConstantTexture({ 0.1f,0.1f,0.1f }))));
+	list[1] = new Sphere(float3(0, 2, 0), 2, new Lambertian(new ConstantTexture({ 0.4f,1,0 })));
+	list[2] = new Sphere(float3(0, 7, 0), 2, new DiffuseLight(new ConstantTexture({4,4,4})));
+	list[3] = new XYRect(3, 5, 1, 3, -2, new DiffuseLight(new ConstantTexture({ 4,4,4 })));
+
+	return new HitableList(list, 4);
+}
 /* Samples a color from the scene */
 static const int g_Depth = 50;
 
@@ -133,22 +156,24 @@ float3 Color(const Ray& r, IHitable* world, int depth = 0)
 	{
 		Ray scattered;
 		float3 attenuation;
+		float3 emitted = rec.material->Emitted(rec.uv.x, rec.uv.y, rec.p);
 		if (depth < g_Depth && rec.material->Scatter(r, rec, attenuation, scattered))
 		{
-			return attenuation * Color(scattered, world, depth + 1);
+			return emitted + attenuation * Color(scattered, world, depth + 1);
 		}
 		else {
 			// Replace with IBL ?
-			return float3(0, 0, 0);
+			return emitted;
 		}
 	}
 
 	// Background
+	return float3(0, 0, 0);
+
 	float3 unitDir = hlslpp::normalize(r.Direction());
 	float t = 0.5f*(unitDir.y + 1.0f);
-return (1.0f - t)*float3(1.0f, 1.0f, 1.0f) + t * float3(0.5f, 0.7f, 1.0f);
+	return (1.0f - t)*float3(1.0f, 1.0f, 1.0f) + t * float3(0.5f, 0.7f, 1.0f);
 }
-
 
 int main()
 {
@@ -158,16 +183,17 @@ int main()
 	// Resolution 
 	int nx = 400;
 	int ny = 200;
-	uint16_t ns = 100;
+	uint16_t ns = 10;
 	
 	unsigned int n = std::thread::hardware_concurrency();
-	uint8_t nThreads = n - 4;
+	uint8_t nThreads = n - 2;
+	nThreads = 1;
 #if !defined(_DEBUG)
 	nThreads = n - 1;
 	//nThreads = 1;
-	nx = 600;
-	ny = 300;
-	ns = 100;
+	nx = 1280;
+	ny = 720;
+	ns = 250;
 #endif
 	std::cout << nx << "x" << ny << "@" << ns << "ppp" << "\n";
 	std::cout << "Running with " << std::to_string(nThreads) << " thread(s)." << "\n";
@@ -179,7 +205,7 @@ int main()
 	float focusDist = 10.0;
 	Camera cam(eye, lookat,float3(0,1,0),20.0f,float(nx) / ny, aperture,focusDist, 0.f, 1.f);
 
-	HitableList* scene = TwoNoiseSpheres(cam,nx,ny);
+	HitableList* scene = SimpleLight(cam,nx,ny);
 	IHitable* world = scene;
 	{
 		auto t = ScopedTimer("Setting up BVH tree: ");
@@ -204,6 +230,9 @@ int main()
 	std::atomic<int> counter = 0;
 	std::atomic<bool> bRendering = true;
 
+	int override_nx = 202;
+	int override_ny = 108;
+
 	int nRows = ny / nThreads;
 	std::vector<std::thread> threadCalc;
 	for (int i = 0; i < nThreads; ++i)
@@ -221,6 +250,8 @@ int main()
 			{
 				for (int i = 0; i < nx; ++i)
 				{
+					//j = ny - override_ny;
+					//i = override_nx;
 					float3 col{ 0,0,0 };
 					for (int s = 0; s < ns; ++s)
 					{
@@ -235,9 +266,10 @@ int main()
 					col = float3(pow(col._f32[0], gamma), pow(col._f32[1], gamma), pow(col._f32[2], gamma));
 
 					// Convert the colors to file range
-					uint8_t ir = uint8_t(255.99* col._f32[0]);
-					uint8_t ig = uint8_t(255.99* col._f32[1]);
-					uint8_t ib = uint8_t(255.99* col._f32[2]);
+					// Just casting brings problems when the value range is bigger than 1
+					uint8_t ir = uint8_t(fmin(255.99f* col._f32[0],255));
+					uint8_t ig = uint8_t(fmin(255.99f* col._f32[1],255));
+					uint8_t ib = uint8_t(fmin(255.99f* col._f32[2],255));
 
 					data[i + (ny - 1 - j) * nx] = { ir,ig,ib };
 					++counter;

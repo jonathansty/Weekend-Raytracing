@@ -4,6 +4,8 @@
 class Texture
 {
 public:
+	Texture() {}
+	virtual ~Texture() {}
 	virtual hlslpp::float3 Value(const hlslpp::float2& uv, const hlslpp::float3& p) const = 0;
 
 };

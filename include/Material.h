@@ -9,8 +9,11 @@ class Texture;
 class Material
 {
 public:
+	Material() {}
 	virtual ~Material() {}
+
 	virtual bool Scatter(const Ray& rin, const HitRecord& rec, float3& attenuation, Ray& scattered) const = 0;
+	virtual float3 Emitted(float u, float v, const float3& p) const { return float3{ 0,0,0 }; }
 };
 
 class Lambertian : public Material
