@@ -15,6 +15,11 @@ configure_file(
 	"${PROJECT_SOURCE_DIR}/Config.h.inl"
 	"${PROJECT_BINARY_DIR}/Config.h"
 )
+set (GCC_COVERAGE_COMPILE_FLAGS 
+"-m32 -msse4.1")
+
+
+SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 include_directories("$(PROJECT_BINARY_DIR)")
 set ( SOURCES 

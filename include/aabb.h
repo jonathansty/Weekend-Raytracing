@@ -47,3 +47,4 @@ namespace Math
 	};
 
 }
+

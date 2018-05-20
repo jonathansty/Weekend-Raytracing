@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include",
+                "/usr/include/c++/8.1.0",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/lib/src",
+                "/usr/include",
+                "/usr/include/c++/8.1.0/tr1",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.1/include/c++/tr1",
+                "/usr/include/c++/v1",
+                "/usr/include/boost/compatibility/cpp_c_headers",
+                "/usr/include/c++/8.1.0",
+                "/usr/include/c++/8.1.0/tr1",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.1/include/c++",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/5.4.1/include/c++/tr1",
+                "/usr/include/c++/v1"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/cuda/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
